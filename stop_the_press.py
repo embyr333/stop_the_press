@@ -1,24 +1,36 @@
 '''
-StopThePress - Snapshot2 
-Added a GUI*, though have only 'line removal' functionality so far.
-(*Adapting my "modstr" code to help remember how to set up a tkinter GUI)
+StopThePress - Snapshot3
+Added the 'comment out' alternative functionality.
 
-TODO next: add the 'comment out' alternative functionality.
+TODO: Consider whether the code can be refactored to reduce redundancies.
 '''
 
+def comment_out_lines_with_suffix(text: str, suffix: str):
+    if not text or not suffix: 
+        output_field.insert("end", 'Please enter your code and suffix')
+        return         
+    lines = text.splitlines()
+    for i in range(len(lines)):
+        if lines[i].endswith(suffix):
+            lines[i] = '# ' + lines[i]
+        output_field.insert("end", lines[i] + '\n')
+
 def remove_lines_with_suffix(text: str, suffix: str): 
-    if text == '': 
-        output_field.insert("end", 'Please enter the code you want to process')
-        return # (not essential, just prevents pointless calls)
+    if not text or not suffix: 
+        output_field.insert("end", 'Please enter your code and suffix')
+        return 
     lines = text.splitlines()
     for line in lines:
         if not line.endswith(suffix):
             output_field.insert("end", line + '\n')
 
-def submit_click(): # actions for Submit button in GUI below
+def comment_out_click(): # actions for Comment Out button in GUI below
+    output_field.delete('1.0', END) # clear any existing output
+    comment_out_lines_with_suffix(input_field.get("1.0",'end').rstrip(), input_field_2.get("1.0",'end').rstrip()) 
+
+def remove_click(): # actions for Remove button in GUI below
     output_field.delete('1.0', END) # clear any existing output
     remove_lines_with_suffix(input_field.get("1.0",'end').rstrip(), input_field_2.get("1.0",'end').rstrip()) 
-
 
 # GUI...
 
@@ -39,11 +51,14 @@ output = StringVar()
 input_field_2 = Text(root_widget, width = 20, fg = 'blue', font=("Courier", 10), height=1)
 input_field_2.grid(row=2, column=0, padx=15) 
 
-# 'Submit' button on 4th row grid (sets output text in 5th row)
-Button(root_widget, text = 'Submit', command = submit_click, bg='#C8C8C8').grid(row=3, column=0)
+# Buttons on 4th & 5th rows grid (set output text in 6th row)
+comment_out_button = Button(root_widget, text = 'Comment Out', command = comment_out_click, bg='#C8C8C8')
+comment_out_button.grid(row=3, column=0)
+remove_button = Button(root_widget, text = 'Remove', command = remove_click, bg='#C8C8C8')
+remove_button.grid(row=4, column=0)
 
 output_field = ScrolledText(root_widget, width = 120, fg = 'blue', font=("Courier", 10), height=20) # output textbox 
-output_field.grid(row=4, column=0) 
+output_field.grid(row=5, column=0) 
 
 root_widget.mainloop()
 
