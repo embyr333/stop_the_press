@@ -1,0 +1,1 @@
+Small tool to automate commenting-out or deletion of Python lines tagged with a specified phrase at their end, e.g. “temp check” for console print lines used to check intermediate state of variables during development. 
