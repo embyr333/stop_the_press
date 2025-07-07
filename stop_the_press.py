@@ -1,8 +1,7 @@
 '''
-StopThePress - Snapshot4
-Refactored a bit to reduce redundant code.
+StopThePress - Snapshot5
+Refactored a bit nmore to further condense.
 
-TODO: Consider whether the code can be refacored further.
 '''
 
 def process(button: str):
@@ -13,22 +12,20 @@ def process(button: str):
         output_field.insert("end", 'Please enter your code and suffix')
         return   
     lines = text.splitlines()
-    if button == 'c':
-        for i in range(len(lines)):
-            if lines[i].endswith(suffix):
+    for i in range(len(lines)):
+        if lines[i].endswith(suffix):
+            if button == 'c':
                 lines[i] = '# ' + lines[i]
-            output_field.insert("end", lines[i] + '\n')
-    else: # (button == 'r')
-        for line in lines:
-            if not line.endswith(suffix):
-                output_field.insert("end", line + '\n')
+            else: # (buttom == 'r)
+                continue
+        output_field.insert("end", lines[i] + '\n')
 
 # GUI...
 
 from tkinter import *
 from tkinter.scrolledtext import ScrolledText
 root_widget = Tk()
-root_widget.title("stop_the_press removes or comments out (adds # before) lines endng in a specifed suffix")
+root_widget.title("StopThePress removes or comments out (adds # before) lines endng in a specifed suffix")
 root_widget.geometry("1010x740") # provisional width, height GUI
 
 Label(root_widget, text = 'Enter code (top box) and suffix (small middle box))').grid(row=0, column=0) 
